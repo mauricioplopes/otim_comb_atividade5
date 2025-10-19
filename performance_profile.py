@@ -1,6 +1,6 @@
 """
 Script Simplificado para Gerar Performance Profile
-Apenas o essencial para gerar os gráficos
+Incluindo PLI da Atividade 1
 """
 
 import numpy as np
@@ -8,10 +8,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # ============================================================================
-# DADOS DAS ATIVIDADES 2, 3 E 4
+# DADOS DAS ATIVIDADES 1, 2, 3 E 4
 # ============================================================================
 
 instancias = [f'inst_{i}' for i in range(1, 16)]
+
+# PLI (Atividade 1)
+pli = [354, 200, 283, 604, 677, 514, 1475, 2265, 2008, 5183, 4315, 4878, 6844, 8922, 8279]
 
 # GRASP (6 variações)
 grasp_std = [354, 200, 283, 604, 677, 514, 1531, 2267, 2008, 5371, 4780, 5129, 13681, 14917, 14590]
@@ -25,7 +28,7 @@ grasp_std_hc3 = [354, 200, 283, 604, 677, 514, 1531, 2267, 2008, 5371, 4780, 512
 tabu_padrao_fi = [354, 200, 281, 604, 677, 514, 1531, 2265, 2008, 5183, 4315, 4878, 14378, 10550, 13797]
 tabu_best_improving = [354, 200, 281, 604, 677, 514, 1531, 2267, 2008, 5304, 4495, 4828, 14419, 10751, 14419]
 tabu_padrao_t2 = [354, 200, 281, 604, 677, 514, 1531, 2265, 2008, 5183, 4458, 4878, 14378, 10743, 14005]
-tabu_prob_ts = [354, 200, 283, 604, 677, 486, 1531, 2265, 2008, 5183, 4458, 4849, 1, 10743, 14005]  # 0 substituído por 1
+tabu_prob_ts = [354, 200, 283, 604, 677, 486, 1531, 2265, 2008, 5183, 4458, 4849, 1, 10743, 14005]
 tabu_intensif = [354, 198, 267, 604, 651, 500, 1531, 2265, 2008, 1924, 3894, 4674, 14381, 8524, 7579]
 
 # Algoritmo Genético (5 variações)
@@ -52,12 +55,12 @@ def performance_profile(results_df, tau_max=10, log_scale=False, titulo="Perform
     """
     
     metodos = results_df.columns
-    instancias = results_df.index
-    n_problemas = len(instancias)
+    instancias_local = results_df.index
+    n_problemas = len(instancias_local)
     
     # Calcula ratios
-    ratios = pd.DataFrame(index=instancias, columns=metodos)
-    for inst in instancias:
+    ratios = pd.DataFrame(index=instancias_local, columns=metodos)
+    for inst in instancias_local:
         melhor = results_df.loc[inst].max()
         ratios.loc[inst] = melhor / results_df.loc[inst]
     
@@ -72,8 +75,8 @@ def performance_profile(results_df, tau_max=10, log_scale=False, titulo="Perform
     
     cores = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b',
              '#e377c2', '#7f7f7f', '#bcbd22', '#17becf', '#aec7e8', '#ffbb78',
-             '#98df8a', '#ff9896', '#c5b0d5', '#c49c94']
-    estilos = ['-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':']
+             '#98df8a', '#ff9896', '#c5b0d5', '#c49c94', '#1a1a1a']
+    estilos = ['-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-']
     
     for i, metodo in enumerate(metodos):
         rho = []
@@ -95,7 +98,7 @@ def performance_profile(results_df, tau_max=10, log_scale=False, titulo="Perform
     ax.set_ylim([0, 1])
     ax.set_xlim([1, tau_max])
     ax.grid(True, alpha=0.3)
-    ax.legend(fontsize=9, loc='lower right')
+    ax.legend(fontsize=9, loc='lower right', ncol=2)
     ax.axvline(x=1, color='black', linestyle=':', alpha=0.5)
     
     plt.tight_layout()
@@ -119,12 +122,13 @@ def performance_profile(results_df, tau_max=10, log_scale=False, titulo="Perform
 # ============================================================================
 
 print("="*80)
-print("GERANDO PERFORMANCE PROFILES")
+print("GERANDO PERFORMANCE PROFILES (COM PLI)")
 print("="*80)
 
-# 1. Todas as variações
-print("\n1. Todas as variações (16 métodos)...")
+# 1. Todas as variações + PLI
+print("\n1. Todas as variações + PLI (17 métodos)...")
 todas = pd.DataFrame({
+    'PLI': pli,
     'GRASP-std': grasp_std,
     'GRASP-std+alpha': grasp_std_alpha,
     'GRASP-std+best': grasp_std_best,
@@ -144,37 +148,53 @@ todas = pd.DataFrame({
 }, index=instancias)
 
 stats1 = performance_profile(todas, tau_max=5, log_scale=False, 
-                             titulo="Performance Profile - Todas Variações",
+                             titulo="Performance Profile - Todas Variações + PLI",
                              arquivo="pp_todas_linear.png")
 
 performance_profile(todas, tau_max=10, log_scale=True,
-                   titulo="Performance Profile - Todas Variações (Log)",
+                   titulo="Performance Profile - Todas Variações + PLI (Log)",
                    arquivo="pp_todas_log.png")
 
-print("\nEstatísticas:")
+print("\nEstatísticas (Todas + PLI):")
 print(stats1.sort_values('ρ(1)', ascending=False))
 
-# 2. Apenas as melhores
-print("\n2. Melhores variações (3 métodos)...")
+# 2. Melhores + PLI
+print("\n2. Melhores variações + PLI (4 métodos)...")
 melhores = pd.DataFrame({
+    'PLI': pli,
     'GRASP-std+hc2': grasp_std_hc2,
     'Tabu-BestImp': tabu_best_improving,
     'AG-Padrão': ag_padrao,
 }, index=instancias)
 
 stats2 = performance_profile(melhores, tau_max=5, log_scale=False,
-                             titulo="Performance Profile - Melhores Variações",
+                             titulo="Performance Profile - Melhores Variações + PLI",
                              arquivo="pp_melhores_linear.png")
 
 performance_profile(melhores, tau_max=10, log_scale=True,
-                   titulo="Performance Profile - Melhores Variações (Log)",
+                   titulo="Performance Profile - Melhores Variações + PLI (Log)",
                    arquivo="pp_melhores_log.png")
 
-print("\nEstatísticas:")
+print("\nEstatísticas (Melhores + PLI):")
 print(stats2.sort_values('ρ(1)', ascending=False))
 
-# 3. Por metaheurística
-print("\n3. GRASP - comparação entre variações...")
+# 3. Apenas Metaheurísticas (SEM PLI) - para comparação direta
+print("\n3. Apenas Metaheurísticas - SEM PLI (3 métodos)...")
+meta_only = pd.DataFrame({
+    'GRASP-std+hc2': grasp_std_hc2,
+    'Tabu-BestImp': tabu_best_improving,
+    'AG-Padrão': ag_padrao,
+}, index=instancias)
+
+stats_meta = performance_profile(meta_only, tau_max=5, log_scale=False,
+                                 titulo="Performance Profile - Apenas Metaheurísticas",
+                                 arquivo="pp_metaheuristicas_only.png")
+
+print("\nEstatísticas (Apenas Metaheurísticas):")
+print(stats_meta.sort_values('ρ(1)', ascending=False))
+
+# 4. GRASP
+print("\n4. GRASP - comparação entre variações...")
 grasp_df = pd.DataFrame({
     'std': grasp_std,
     'std+alpha': grasp_std_alpha,
@@ -188,7 +208,8 @@ performance_profile(grasp_df, tau_max=3, log_scale=False,
                    titulo="Performance Profile - GRASP",
                    arquivo="pp_grasp.png")
 
-print("\n4. Tabu Search - comparação entre variações...")
+# 5. Tabu Search
+print("\n5. Tabu Search - comparação entre variações...")
 tabu_df = pd.DataFrame({
     'Padrão(FI)': tabu_padrao_fi,
     'BestImp': tabu_best_improving,
@@ -201,7 +222,8 @@ performance_profile(tabu_df, tau_max=3, log_scale=False,
                    titulo="Performance Profile - Tabu Search",
                    arquivo="pp_tabu.png")
 
-print("\n5. Algoritmo Genético - comparação entre variações...")
+# 6. Algoritmo Genético
+print("\n6. Algoritmo Genético - comparação entre variações...")
 ag_df = pd.DataFrame({
     'Padrão': ag_padrao,
     'Padrão+Pop': ag_padrao_pop,
@@ -218,10 +240,15 @@ print("\n" + "="*80)
 print("✓ CONCLUÍDO!")
 print("="*80)
 print("\nArquivos gerados:")
-print("  - pp_todas_linear.png")
-print("  - pp_todas_log.png")
-print("  - pp_melhores_linear.png")
-print("  - pp_melhores_log.png")
-print("  - pp_grasp.png")
-print("  - pp_tabu.png")
-print("  - pp_ag.png")
+print("  📊 Com PLI:")
+print("    - pp_todas_linear.png (17 métodos)")
+print("    - pp_todas_log.png (17 métodos)")
+print("    - pp_melhores_linear.png (4 métodos)")
+print("    - pp_melhores_log.png (4 métodos)")
+print("  📊 Sem PLI:")
+print("    - pp_metaheuristicas_only.png (3 métodos)")
+print("  📊 Por metaheurística:")
+print("    - pp_grasp.png")
+print("    - pp_tabu.png")
+print("    - pp_ag.png")
+print("\n💡 Total: 8 gráficos PNG gerados")
