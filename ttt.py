@@ -18,7 +18,7 @@ Outputs (in --out):
     ttt_points_{instance}__target_{target}__{algorithm}.csv
 
 Example:
-    python ttt_plotter.py results.csv --out out/ --time-limit 600 --fit \
+    python ttt.py results.csv --out out/ --time-limit 600 --fit \
         --title-prefix "MAX-SC-QBF" --normalize-by-total
 """
 import argparse
