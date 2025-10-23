@@ -1,0 +1,3 @@
+instance,target,algorithm,mu_hat,lambda_hat,successes,total_runs
+instance-11.txt,4782.0,GRASP_alpha0.1_sampled_greedy,14.588202839947916,130.58019955723447,4,50
+instance-11.txt,4782.0,TS_t20_i1000,17.294048647403564,112.46037956810241,46,50

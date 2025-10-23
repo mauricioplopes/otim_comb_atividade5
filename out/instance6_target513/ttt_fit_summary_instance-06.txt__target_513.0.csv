@@ -1,0 +1,4 @@
+instance,target,algorithm,mu_hat,lambda_hat,successes,total_runs
+instance-06.txt,513.0,GA_pop100_mut0.01_gen1000,2.756868139760938,3.468275802046979,44,50
+instance-06.txt,513.0,GRASP_alpha0.1_sampled_greedy,0.020884538043577663,0.09377179187040197,44,50
+instance-06.txt,513.0,TS_t20_i1000,1.1149899652772612,0.39991264989038877,50,50

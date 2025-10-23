@@ -1,0 +1,5 @@
+instance,target,algorithm,t,p,mu_hat,lambda_hat,total_runs,successes,success_rate,time_limit,normalize_by_total
+instance-11.txt,4782.0,GRASP_alpha0.1_sampled_greedy,28.3462,0.02,14.588202839947916,130.58019955723447,50,4,0.08,600.0,True
+instance-11.txt,4782.0,GRASP_alpha0.1_sampled_greedy,78.1023,0.04,14.588202839947916,130.58019955723447,50,4,0.08,600.0,True
+instance-11.txt,4782.0,GRASP_alpha0.1_sampled_greedy,105.0995,0.06,14.588202839947916,130.58019955723447,50,4,0.08,600.0,True
+instance-11.txt,4782.0,GRASP_alpha0.1_sampled_greedy,342.4094,0.08,14.588202839947916,130.58019955723447,50,4,0.08,600.0,True
