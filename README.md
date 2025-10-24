@@ -54,7 +54,7 @@ Gera 8 gráficos comparativos salvos como PNG.
 # Tabu Search
 ./run_tabu.sh instancia.txt 5000 results/tabu.csv
 ```
-Cada script executa 50 seeds com limite de 600 segundos.
+Cada script executa 50 seeds da instancia.txt tentando atingir o target=5000 com limite de 600 segundos.
 
 ### Gerar TTT Plots
 ```bash
